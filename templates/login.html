@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Age &amp; Gender AI Detector</title>
+  <meta name="description" content="Login to Age & Gender AI Detector"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,167,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,167,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    /* Ambient glow */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(0,212,167,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 65%, rgba(123,97,255,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: rgba(15,32,39,0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,212,167,0.3);
+      border-radius: 14px;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      z-index: 9999;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s;
+      min-width: 320px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      white-space: nowrap;
+    }
+    .toast.success { border-color: rgba(0,212,167,0.5); }
+    .toast.error   { border-color: rgba(255,80,80,0.5); }
+    .toast.show    { transform: translateX(-50%) translateY(0); }
+
+    .toast-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .toast.success .toast-icon { background: rgba(0,212,167,0.15); }
+    .toast.error   .toast-icon { background: rgba(255,80,80,0.15); }
+
+    .toast-bar {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      border-radius: 0 0 14px 14px;
+      width: 100%;
+      transform-origin: left;
+      animation: none;
+    }
+    .toast.success .toast-bar { background: linear-gradient(90deg,#00d4a7,#7b61ff); }
+    .toast.error   .toast-bar { background: linear-gradient(90deg,#ff5050,#ff9060); }
+    .toast.show .toast-bar    { animation: shrinkBar 3s linear forwards; }
+
+    @keyframes shrinkBar {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(0); }
+    }
+
+    /* ── CARD ── */
+    .auth-page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 460px;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 48px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -60%; left: -60%;
+      width: 220%; height: 220%;
+      background: radial-gradient(circle at center, rgba(0,212,167,0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Back link */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(184,199,206,0.7);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #00d4a7; }
+
+    /* Icon */
+    .icon-wrap {
+      width: 68px; height: 68px;
+      border-radius: 18px;
+      background: linear-gradient(135deg,#00d4a7,#7b61ff);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 28px rgba(0,212,167,0.4);
+      animation: breathe 3s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { box-shadow: 0 0 28px rgba(0,212,167,0.4); }
+      50%      { box-shadow: 0 0 52px rgba(0,212,167,0.7); }
+    }
+
+    h1 {
+      font-size: 28px; font-weight: 800;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #b8c7ce;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #b8c7ce;
+      margin-bottom: 7px;
+      letter-spacing: 0.02em;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(184,199,206,0.5);
+      width: 17px; height: 17px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 16px 13px 42px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    input:focus {
+      border-color: rgba(0,212,167,0.5);
+      background: rgba(0,212,167,0.04);
+      box-shadow: 0 0 0 3px rgba(0,212,167,0.1);
+    }
+    input::placeholder { color: rgba(184,199,206,0.4); }
+
+    /* Password eye toggle */
+    .eye-btn {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: rgba(184,199,206,0.5);
+      cursor: pointer;
+      padding: 0;
+      display: flex; align-items: center;
+      transition: color 0.2s;
+    }
+    .eye-btn:hover { color: #00d4a7; }
+
+    /* Submit */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg,#00d4a7,#7b61ff);
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 0 24px rgba(0,212,167,0.35);
+      transition: all 0.3s;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      box-shadow: 0 0 44px rgba(0,212,167,0.6);
+      transform: translateY(-2px);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Footer link */
+    .footer-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: rgba(184,199,206,0.7);
+    }
+    .footer-link a {
+      color: #00d4a7;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link a:hover { color: #00f0c0; }
+
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0;
+    }
+    .divider-line {
+      flex: 1; height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+    .divider-text {
+      font-size: 12px; color: rgba(184,199,206,0.5);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Toast Notification -->
+<div class="toast {% if error %}error{% elif success %}success{% endif %}" id="toast">
+  <div class="toast-icon" id="toastIcon"></div>
+  <span id="toastMsg"></span>
+  <div class="toast-bar"></div>
+</div>
+
+<div class="auth-page">
+  <!-- Back button -->
+  <a href="/" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+    Back to Home
+  </a>
+
+  <div class="card">
+    <div class="icon-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+
+    <h1>Login</h1>
+    <p class="subtitle">Login to access the AI Age &amp; Gender Detector.</p>
+
+    <form id="loginForm" method="POST" action="/login" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" id="password" name="password" placeholder="Your password" required autocomplete="current-password"/>
+          <button type="button" class="eye-btn" onclick="togglePwd('password', this)" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">
+        <div class="spinner" id="spinner"></div>
+        <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10,17 15,12 10,7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span id="btnLabel">Login</span>
+      </button>
+    </form>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">Don't have an account?</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="footer-link">
+      <a href="/signup">Create a free account →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Server-side message injection ──
+  const serverError   = {{ (error | tojson) if error else 'null' }};
+  const serverSuccess = {{ (success | tojson) if success else 'null' }};
+  const redirectTo    = {{ (redirect_to | tojson) if redirect_to is defined and redirect_to else 'null' }};
+
+  function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    const icon  = document.getElementById('toastIcon');
+    const text  = document.getElementById('toastMsg');
+
+    toast.className = `toast ${type}`;
+    icon.textContent = type === 'success' ? '✅' : '❌';
+    text.textContent = msg;
+
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (serverError) {
+      showToast(serverError, 'error');
+    }
+    if (serverSuccess) {
+      showToast(serverSuccess, 'success');
+      if (redirectTo) {
+        setTimeout(() => { window.location.href = redirectTo; }, 2000);
+      }
+    }
+  });
+
+  // ── Form loading state ──
+  function handleSubmit(e) {
+    const btn     = document.getElementById('submitBtn');
+    const spinner = document.getElementById('spinner');
+    const icon    = document.getElementById('btnIcon');
+    const label   = document.getElementById('btnLabel');
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    icon.style.display    = 'none';
+    label.textContent     = 'Logging in…';
+  }
+
+  // ── Password visibility toggle ──
+  function togglePwd(id, btn) {
+    const input = document.getElementById(id);
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.innerHTML = isText
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  }
+</script>
+</body>
+</html>

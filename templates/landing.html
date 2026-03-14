@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Age & Gender AI Detector — Advanced Face Analysis</title>
+  <meta name="description" content="AI-powered age and gender detection using advanced deep learning technology. Upload a photo or use your webcam for instant, accurate results." />
+  <meta name="keywords" content="age detection, gender detection, AI, face analysis, deep learning, computer vision" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/landing.css" />
+</head>
+<body>
+
+<!-- ================================================================
+     APP WRAPPER
+     ================================================================ -->
+<div class="app-wrapper" id="appWrapper">
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ============================================================
+       LEFT SIDEBAR
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <!-- Brain / AI icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a4 4 0 0 1 4 4c0 1.1-.4 2.1-1 2.8"/>
+          <path d="M8 6a4 4 0 0 0 0 8"/>
+          <path d="M12 18v4"/>
+          <path d="M8 14a4 4 0 0 0 4 4"/>
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M16 6a4 4 0 0 1 0 8"/>
+          <path d="M12 6V2"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-title">Age &amp; Gender</div>
+        <div class="logo-subtitle">AI Detector</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+
+      <!-- MAIN MENU -->
+      <div>
+        <div class="nav-section-title">Main Menu</div>
+        <div class="nav-section">
+          <a href="#" class="nav-item" id="nav-dashboard" onclick="handleNav('dashboard', event)">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span class="nav-label">Dashboard</span>
+          </a>
+
+          <a href="#" class="nav-item active" id="nav-home" onclick="handleNav('home', event)">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+            <span class="nav-label">Home</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- INFORMATION -->
+      <div>
+        <div class="nav-section-title">Information</div>
+        <div class="nav-section">
+          <a href="#" class="nav-item" id="nav-about" onclick="handleNav('about', event)">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span class="nav-label">About</span>
+          </a>
+
+          <a href="#" class="nav-item" id="nav-docs" onclick="handleNav('docs', event)">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+            <span class="nav-label">Documentation</span>
+          </a>
+        </div>
+      </div>
+
+    </nav>
+
+    <!-- Sidebar Login Button -->
+    <div class="sidebar-footer">
+      <button class="sidebar-login-btn" id="sidebarLoginBtn" onclick="goToLogin()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10,17 15,12 10,7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Login
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="main-content" id="mainContent">
+
+    <!-- TOP NAVBAR -->
+    <header class="top-navbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <!-- Hamburger (mobile) -->
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <h1 class="navbar-welcome">Welcome <span>Back 👋</span></h1>
+      </div>
+      <div class="navbar-actions">
+        <button class="btn-text" id="navLoginBtn" onclick="goToLogin()">Login</button>
+        <button class="btn-primary" id="navSignupBtn" onclick="goToSignup()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Sign Up
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN SCROLL CONTENT -->
+    <div class="content-area">
+
+      <!-- =====================================================
+           HERO SECTION
+           ===================================================== -->
+      <section class="hero-section" id="heroSection">
+
+        <div class="hero-badge fade-in-up">
+          <span class="hero-badge-dot"></span>
+          AI Powered Detection
+        </div>
+
+        <h2 class="hero-title fade-in-up delay-1">
+          Detect <span class="gradient-text">Age & Gender</span><br/>with AI Precision
+        </h2>
+
+        <p class="hero-description fade-in-up delay-2">
+          Advanced deep learning technology. Upload a photo or use your webcam
+          for instant, accurate results.
+        </p>
+
+        <div class="hero-buttons fade-in-up delay-3">
+          <button class="btn-hero-primary" id="heroGetStartedBtn" onclick="goToSignup()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Get Started Free
+          </button>
+          <button class="btn-hero-outlined" id="heroLoginBtn" onclick="goToLogin()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10,17 15,12 10,7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            Login
+          </button>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           LOGIN CARD SECTION
+           ===================================================== -->
+      <section class="login-card-section" id="loginCardSection">
+        <div class="login-card fade-in-up">
+          <div class="lock-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3 class="login-card-title">Login to Start</h3>
+          <p class="login-card-desc">
+            Create a free account to access the detector and analyze faces in real-time.
+          </p>
+          <button class="btn-signup" id="loginCardSignupBtn" onclick="goToSignup()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Sign Up Now
+          </button>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           FEATURES SECTION
+           ===================================================== -->
+      <section class="features-section" id="featuresSection">
+        <div class="section-header fade-in-up">
+          <div class="section-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+            </svg>
+            How It Works
+          </div>
+          <h2 class="section-title">Three Simple Steps</h2>
+        </div>
+
+        <div class="features-grid">
+
+          <!-- Card 1 -->
+          <div class="feature-card fade-in-up delay-1" id="featureCard1">
+            <div class="feature-card-image-wrapper">
+              <img
+                class="feature-card-image"
+                src="/static/images/upload_feature.png"
+                alt="Upload or Capture feature"
+                loading="lazy"
+                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22180%22><rect fill=%22%230f2027%22 width=%22400%22 height=%22180%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2300d4a7%22 font-size=%2240%22>📁</text></svg>'"
+              />
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-number">1</div>
+              <h3 class="feature-card-title">Upload or Capture</h3>
+              <p class="feature-card-text">Upload an image or use your webcam to capture a photo.</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="feature-card fade-in-up delay-2" id="featureCard2">
+            <div class="feature-card-image-wrapper">
+              <img
+                class="feature-card-image"
+                src="/static/images/ai_processing.png"
+                alt="AI Processing feature"
+                loading="lazy"
+                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22180%22><rect fill=%22%230f2027%22 width=%22400%22 height=%22180%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%237b61ff%22 font-size=%2240%22>🤖</text></svg>'"
+              />
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-number">2</div>
+              <h3 class="feature-card-title">AI Processing</h3>
+              <p class="feature-card-text">Our AI analyzes the image and detects faces automatically.</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="feature-card fade-in-up delay-3" id="featureCard3">
+            <div class="feature-card-image-wrapper">
+              <img
+                class="feature-card-image"
+                src="/static/images/results_feature.png"
+                alt="Get Results feature"
+                loading="lazy"
+                onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22180%22><rect fill=%22%230f2027%22 width=%22400%22 height=%22180%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2300d4a7%22 font-size=%2240%22>📊</text></svg>'"
+              />
+            </div>
+            <div class="feature-card-body">
+              <div class="feature-card-number">3</div>
+              <h3 class="feature-card-title">Get Results</h3>
+              <p class="feature-card-text">View detailed age and gender predictions for each detected face.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================
+           STATISTICS SECTION
+           ===================================================== -->
+      <section class="stats-section" id="statsSection">
+        <div class="section-header fade-in-up">
+          <div class="section-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6"  y1="20" x2="6"  y2="14"/>
+            </svg>
+            Performance
+          </div>
+          <h2 class="section-title">Proven Results</h2>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card fade-in-up delay-1" id="statCard1">
+            <span class="stat-number" data-target="99" data-suffix="%">0%</span>
+            <div class="stat-label">Detection Accuracy</div>
+          </div>
+          <div class="stat-card fade-in-up delay-2" id="statCard2">
+            <span class="stat-number">&lt;1s</span>
+            <div class="stat-label">Processing Time</div>
+          </div>
+          <div class="stat-card fade-in-up delay-3" id="statCard3">
+            <span class="stat-number" data-target="10000" data-suffix="K+">0K+</span>
+            <div class="stat-label">Images Analyzed</div>
+          </div>
+          <div class="stat-card fade-in-up delay-4" id="statCard4">
+            <span class="stat-number">24/7</span>
+            <div class="stat-label">System Uptime</div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.content-area -->
+  </main>
+</div><!-- /.app-wrapper -->
+
+<!-- ================================================================
+     FLOATING PARTICLES (JS generated)
+     ================================================================ -->
+<div id="particlesContainer" aria-hidden="true"></div>
+
+<script src="/static/js/landing.js"></script>
+</body>
+</html>

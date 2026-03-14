@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Signup — Age & Gender AI Detector</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<style>
+
+*, *::before, *::after {
+box-sizing: border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+}
+
+/* CARD */
+
+.auth-page{
+width:100%;
+max-width:460px;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(16px);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:24px;
+padding:48px 44px;
+}
+
+/* ICON */
+
+.icon-wrap{
+width:68px;
+height:68px;
+border-radius:18px;
+background:linear-gradient(135deg,#00d4a7,#7b61ff);
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 24px;
+box-shadow:0 0 28px rgba(0,212,167,0.4);
+}
+
+/* TEXT */
+
+h1{
+font-size:28px;
+font-weight:800;
+text-align:center;
+margin-bottom:8px;
+}
+
+.subtitle{
+text-align:center;
+color:#b8c7ce;
+font-size:14px;
+margin-bottom:36px;
+}
+
+/* FORM */
+
+.form-group{
+margin-bottom:18px;
+}
+
+label{
+display:block;
+font-size:13px;
+font-weight:600;
+color:#b8c7ce;
+margin-bottom:7px;
+}
+
+input{
+width:100%;
+padding:13px 16px;
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:12px;
+color:#fff;
+font-size:14px;
+outline:none;
+}
+
+input:focus{
+border-color:rgba(0,212,167,0.5);
+background:rgba(0,212,167,0.04);
+box-shadow:0 0 0 3px rgba(0,212,167,0.1);
+}
+
+/* BUTTON */
+
+.btn{
+width:100%;
+padding:14px;
+background:linear-gradient(135deg,#00d4a7,#7b61ff);
+border:none;
+border-radius:50px;
+color:#fff;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+margin-top:10px;
+box-shadow:0 0 24px rgba(0,212,167,0.35);
+transition:0.3s;
+}
+
+.btn:hover{
+box-shadow:0 0 44px rgba(0,212,167,0.6);
+transform:translateY(-2px);
+}
+
+/* FOOTER */
+
+.footer-link{
+text-align:center;
+margin-top:24px;
+font-size:13px;
+color:#b8c7ce;
+}
+
+.footer-link a{
+color:#00d4a7;
+text-decoration:none;
+font-weight:600;
+}
+
+.footer-link a:hover{
+color:#00f0c0;
+}
+
+.back-btn{
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#b8c7ce;
+font-size:13px;
+text-decoration:none;
+margin-bottom:32px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="auth-page">
+
+<a href="/" class="back-btn">← Back to Home</a>
+
+<div class="card">
+
+<div class="icon-wrap">
+🔐
+</div>
+
+<h1>Create Account</h1>
+<p class="subtitle">Sign up to use the AI Age & Gender Detector</p>
+
+{% if error %}
+<div style="background:rgba(255,100,100,0.15); border:1px solid rgba(255,100,100,0.3); border-radius:12px; padding:16px; margin-bottom:24px; color:#ffaaaa; font-size:14px;">
+  ⚠️ {{ error }}
+</div>
+{% endif %}
+
+<form action="/signup" method="POST">
+
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" name="name" required placeholder="Enter your full name">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" name="email" required placeholder="your@email.com">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" name="password" required minlength="6" placeholder="Minimum 6 characters">
+</div>
+
+<button type="submit" class="btn">Sign Up</button>
+
+</form>
+
+<div class="footer-link">
+Already have an account?  
+<a href="/login">Login →</a>
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

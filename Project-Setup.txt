@@ -1,0 +1,82 @@
+# 🚀 Age & Gender AI Detector - Complete Setup Guide
+
+## 📋 Prerequisites
+- Python 3.9+ 
+- MongoDB (local or Atlas)
+- VS Code recommended
+
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+## 2️⃣ API Keys & .env Setup
+Create `.env` file in root:
+
+```
+# OpenRouter (Mistral Pixtral) - Get FREE credits!
+MISTRAL_API_KEY=sk-or-v1-...
+
+# Flask secret (generate: python -c "import secrets; print(secrets.token_hex(32))")
+SECRET_KEY=your-32-char-secret-here
+
+
+# MongoDB Atlas:
+# MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/age_gender_db?retryWrites=true&w=majority
+```
+
+### Get OpenRouter API Key (5 min):
+1. https://openrouter.ai → Sign up/Login
+2. https://openrouter.ai/keys → **New Key**
+3. Copy `sk-or-...` → paste in `.env`
+4. https://openrouter.ai/billing → Add $1-5 credits (first 10k tokens free)
+
+### MongoDB Setup:
+**Atlas (cloud, free tier)**
+1. https://mongodb.com/atlas → Sign up
+2. Create free cluster → Connect → Drivers → Copy URI
+3. Replace username/password in MONGO_URI
+
+## 3️⃣ Run Server
+```bash
+python server.py
+```
+✅ Server: http://localhost:5000
+
+## 4️⃣ Test Setup
+```
+# Test API quota (in new terminal)
+curl http://localhost:5000/test-key
+# Or PowerShell:
+Invoke-WebRequest http://localhost:5000/test-key | ConvertFrom-Json
+```
+**✅** `{"valid":true,"models_available":500+}`
+
+## 5️⃣ Usage
+1. **Signup/Login** → Dashboard
+2. **Live Camera** → AI auto-analyzes every 5s
+3. **Upload Image** → Drag/drop → Analyze
+4. **Results** → Age range, Gender, Confidence %
+
+## 🔧 Troubleshooting
+| Issue | Fix |
+|-------|-----|
+| `MISTRAL_API_KEY missing` | Add key to .env |
+| `402 QUOTA` | Add credits: openrouter.ai/billing |
+| MongoDB error | Start `mongod` or fix MONGO_URI |
+| 500 Dashboard | Check session/user in MongoDB |
+
+## 📱 Features
+- ✨ Live webcam + file upload
+- 🤖 Mistral Pixtral-12B AI model
+- 🎯 Age range + Gender + Confidence
+- 🔐 Secure auth (hashed pw)
+- 📱 Responsive UI (mobile OK)
+- ⚡ Auto-analysis + manual capture
+
+## 🤝 Support
+- Issues? Check server console
+- Questions? server.py has debug prints
+
+**Ready in 10 mins! 🎉**
+
