@@ -65,7 +65,7 @@ def call_mistral(image_b64: str, mime_type: str = "image/jpeg", retries: int = 3
     if err: return None, err
     
     headers = {
-        "Authorization": f"Bearer {key}",
+        "Authorization": f"Bear er {key}",
         "Content-Type": "application/json",
         "HTTP-Referer": "http://localhost:5000",
         "X-Title": "Age Gender AI Detector",
@@ -243,6 +243,6 @@ def analyze_file():
 if __name__ == "__main__":
     print("🚀 Age Gender Detection Server - MongoDB Fallback Enabled")
     print(" - http://localhost:5000")
-    print(" - Test quota: http://localhost:5000/test-key")
-    print(" - Fix Atlas: Whitelist IP 0.0.0.0/0, check MONGO_URI")
+    print(" - Test API quota: http://localhost:5000/test-key")
+    print(" - Fix Atlas: Whitelist IP 0.0.0.0/0, check MONGO_URI format")
     app.run(debug=True, port=5000)
